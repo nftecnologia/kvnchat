@@ -32,10 +32,6 @@ Rails.application.routes.draw do
     resource :slack_uploads, only: [:show]
   end
 
-  # Temporary debug routes
-  get '/debug/pricing_plan', to: 'debug#pricing_plan'
-  post '/debug/update_pricing_plan', to: 'debug#update_pricing_plan'
-  
   get '/api', to: 'api#index'
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
