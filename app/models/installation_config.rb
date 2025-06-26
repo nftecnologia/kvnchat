@@ -40,7 +40,7 @@ class InstallationConfig < ApplicationRecord
       # Handle case where serialized_value is already the direct value (incorrect format from database)
       if serialized_value.is_a?(String) 
         # Direct string value stored incorrectly - fix it
-        Rails.logger.warn "InstallationConfig #{name}: Direct string value detected, auto-fixing: #{serialized_value}"
+        Rails.logger.warn "InstallationConfig #{name}: Direct string value detected, auto-fixing"
         self.value = serialized_value
         save! if persisted?
         return serialized_value
@@ -55,12 +55,12 @@ class InstallationConfig < ApplicationRecord
         end
         val
       else
-        Rails.logger.warn "InstallationConfig #{name}: Unexpected serialized_value format: #{serialized_value.inspect}"
+        Rails.logger.warn "InstallationConfig #{name}: Unexpected serialized_value format detected"
         nil
       end
     rescue => e
       Rails.logger.error "InstallationConfig #{name}: Error accessing value: #{e.message}"
-      Rails.logger.error "serialized_value: #{serialized_value.inspect}"
+      Rails.logger.error "Will return nil to prevent crash"
       nil
     end
   end
