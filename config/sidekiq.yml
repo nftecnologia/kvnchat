@@ -28,9 +28,13 @@
   - active_storage_analysis
   - active_storage_purge
   - action_mailbox_incineration
+  - captain
+  - webhooks
+  - integrations
 
 # you can override concurrency based on environment
 production:
-  :concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY", 10) %>
+  :concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY", 5) %>
+  :timeout: 30
 staging:
   :concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY", 10) %>

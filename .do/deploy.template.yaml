@@ -1,0 +1,120 @@
+name: kvnchat-enterprise
+region: nyc1
+
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: nftecnologia/kvnchat
+    branch: main
+    deploy_on_push: true
+  build_command: |
+    bundle install --without development test
+    pnpm install
+    pnpm build
+    bundle exec rails assets:precompile
+  run_command: |
+    bundle exec rails db:migrate
+    bundle exec puma -C config/puma.rb
+  environment_slug: ruby
+  instance_count: 1
+  instance_size_slug: apps-s-1vcpu-1gb
+  http_port: 3000
+  health_check:
+    http_path: /
+    initial_delay_seconds: 60
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
+  routes:
+  - path: /
+  envs:
+  - key: RAILS_ENV
+    value: production
+  - key: SECRET_KEY_BASE
+    type: SECRET
+  - key: FRONTEND_URL
+    value: ${APP_URL}
+  - key: RAILS_LOG_TO_STDOUT
+    value: "true"
+  - key: FORCE_SSL
+    value: "true"
+  - key: ENABLE_ACCOUNT_SIGNUP
+    value: "false"
+  - key: RAILS_SERVE_STATIC_FILES
+    value: "true"
+  - key: RAILS_MAX_THREADS
+    value: "5"
+  - key: WEB_CONCURRENCY
+    value: "2"
+  
+  # Database
+  - key: DATABASE_URL
+    value: ${db.DATABASE_URL}
+  - key: REDIS_URL
+    value: ${redis.DATABASE_URL}
+  
+  # Enterprise Features
+  - key: CAPTAIN_ENABLED
+    value: "true"
+  - key: OPENAI_API_KEY
+    type: SECRET
+  - key: OPENAI_MODEL
+    value: "gpt-4"
+  - key: OPENAI_EMBEDDINGS_MODEL
+    value: "text-embedding-ada-002"
+  
+  # Email (configure com seu provedor)
+  - key: MAILER_SENDER_EMAIL
+    value: "noreply@seu-dominio.com"
+  - key: SMTP_ADDRESS
+    value: ""
+  - key: SMTP_PORT
+    value: "587"
+  - key: SMTP_USERNAME
+    type: SECRET
+  - key: SMTP_PASSWORD
+    type: SECRET
+  - key: SMTP_AUTHENTICATION
+    value: "plain"
+  - key: SMTP_ENABLE_STARTTLS_AUTO
+    value: "true"
+
+- name: worker
+  source_dir: /
+  github:
+    repo: nftecnologia/kvnchat
+    branch: main
+    deploy_on_push: true
+  build_command: bundle install --without development test
+  run_command: bundle exec sidekiq -C config/sidekiq.yml
+  environment_slug: ruby
+  instance_count: 1
+  instance_size_slug: apps-s-1vcpu-1gb
+  envs:
+  - key: RAILS_ENV
+    value: production
+  - key: SECRET_KEY_BASE
+    type: SECRET
+  - key: DATABASE_URL
+    value: ${db.DATABASE_URL}
+  - key: REDIS_URL
+    value: ${redis.DATABASE_URL}
+  - key: CAPTAIN_ENABLED
+    value: "true"
+  - key: OPENAI_API_KEY
+    type: SECRET
+
+databases:
+- name: db
+  engine: PG
+  version: "15"
+  production: true
+  size: db-s-1vcpu-1gb
+
+- name: redis
+  engine: REDIS
+  version: "7"
+  production: true
+  size: db-s-1vcpu-1gb

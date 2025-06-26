@@ -1,0 +1,102 @@
+name: kvnchat
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: nftecnologia/kvnchat
+    branch: main
+    deploy_on_push: true
+  run_command: bundle exec puma -C config/puma.rb
+  environment_slug: ruby
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 3000
+  routes:
+  - path: /
+  envs:
+  - key: RAILS_ENV
+    value: production
+  - key: SECRET_KEY_BASE
+    type: SECRET
+    value: ${SECRET_KEY_BASE}
+  - key: FRONTEND_URL
+    value: ${APP_URL}
+  - key: DATABASE_URL
+    value: ${db.DATABASE_URL}
+  - key: REDIS_URL
+    value: ${redis.DATABASE_URL}
+  - key: RAILS_LOG_TO_STDOUT
+    value: "true"
+  - key: FORCE_SSL
+    value: "true"
+  - key: ENABLE_ACCOUNT_SIGNUP
+    value: "false"
+  - key: MAILER_SENDER_EMAIL
+    value: "noreply@seu-dominio.com"
+  - key: ACTIVE_STORAGE_SERVICE
+    value: "local"
+  - key: RAILS_SERVE_STATIC_FILES
+    value: "true"
+  - key: CAPTAIN_ENABLED
+    value: "true"
+  - key: OPENAI_API_KEY
+    type: SECRET
+    value: ${OPENAI_API_KEY}
+  - key: OPENAI_MODEL
+    value: "gpt-4"
+  - key: OPENAI_EMBEDDINGS_MODEL
+    value: "text-embedding-ada-002"
+
+- name: worker
+  source_dir: /
+  github:
+    repo: nftecnologia/kvnchat
+    branch: main
+    deploy_on_push: true
+  run_command: bundle exec sidekiq -C config/sidekiq.yml
+  environment_slug: ruby
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  envs:
+  - key: RAILS_ENV
+    value: production
+  - key: SECRET_KEY_BASE
+    type: SECRET
+    value: ${SECRET_KEY_BASE}
+  - key: DATABASE_URL
+    value: ${db.DATABASE_URL}
+  - key: REDIS_URL
+    value: ${redis.DATABASE_URL}
+  - key: CAPTAIN_ENABLED
+    value: "true"
+  - key: OPENAI_API_KEY
+    type: SECRET
+    value: ${OPENAI_API_KEY}
+
+databases:
+- name: db
+  engine: PG
+  version: "15"
+  production: false
+  size: basic-xxs
+
+- name: redis
+  engine: REDIS
+  version: "7"
+  production: false
+  size: basic-xxs
+
+static_sites:
+- name: frontend
+  source_dir: /
+  github:
+    repo: nftecnologia/kvnchat
+    branch: main
+    deploy_on_push: true
+  build_command: pnpm install && pnpm build
+  output_dir: public
+  index_document: index.html
+  error_document: index.html
+  routes:
+  - path: /vite-dev
+  - path: /assets
