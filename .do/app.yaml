@@ -33,7 +33,6 @@ services:
   - key: RAILS_ENV
     value: production
   - key: SECRET_KEY_BASE
-    type: SECRET
     value: "12d7f1e8ee481d8b43290e9ebc37c9bc0a0c877c15619ae1874987d1a36234350b1788712491eb2f7ccdafd0e1404757ba4f307ad61117c8e90c0a7b2af18969"
     scope: RUN_AND_BUILD_TIME
   - key: FRONTEND_URL
@@ -102,7 +101,6 @@ services:
   - key: RAILS_ENV
     value: production
   - key: SECRET_KEY_BASE
-    type: SECRET
     value: "12d7f1e8ee481d8b43290e9ebc37c9bc0a0c877c15619ae1874987d1a36234350b1788712491eb2f7ccdafd0e1404757ba4f307ad61117c8e90c0a7b2af18969"
     scope: RUN_AND_BUILD_TIME
   - key: DATABASE_URL
