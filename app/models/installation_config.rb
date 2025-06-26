@@ -36,7 +36,33 @@ class InstallationConfig < ApplicationRecord
     # It was throwing error as the default value of column '{}' was failing in deserialization.
     return {}.with_indifferent_access if new_record? && @attributes['serialized_value']&.value_before_type_cast == '{}'
 
-    serialized_value[:value]
+    begin
+      # Handle case where serialized_value is already the direct value (incorrect format from database)
+      if serialized_value.is_a?(String) 
+        # Direct string value stored incorrectly - fix it
+        Rails.logger.warn "InstallationConfig #{name}: Direct string value detected, auto-fixing: #{serialized_value}"
+        self.value = serialized_value
+        save! if persisted?
+        return serialized_value
+      elsif serialized_value.is_a?(Hash) && serialized_value.key?(:value)
+        serialized_value[:value]
+      elsif serialized_value.is_a?(Hash) && serialized_value.key?('value')
+        val = serialized_value['value']
+        if val.present?
+          Rails.logger.warn "InstallationConfig #{name}: String key detected, auto-fixing to symbol key"
+          self.value = val
+          save! if persisted?
+        end
+        val
+      else
+        Rails.logger.warn "InstallationConfig #{name}: Unexpected serialized_value format: #{serialized_value.inspect}"
+        nil
+      end
+    rescue => e
+      Rails.logger.error "InstallationConfig #{name}: Error accessing value: #{e.message}"
+      Rails.logger.error "serialized_value: #{serialized_value.inspect}"
+      nil
+    end
   end
 
   def value=(value_to_assigned)
