@@ -9,11 +9,12 @@ services:
   build_command: |
     bundle install --deployment --without development test
     pnpm install --frozen-lockfile
-    pnpm run build:sdk
-    pnpm build 
+    BUILD_MODE=library bundle exec bin/vite build
+    bundle exec bin/vite build
     bundle exec rails assets:precompile
   run_command: |
-    bundle exec rails db:migrate
+    bundle exec rails ip_lookup:setup
+    bundle exec rails db:chatwoot_prepare
     bundle exec puma -C config/puma.rb
   environment_slug: ruby
   instance_count: 1
@@ -77,6 +78,8 @@ services:
     value: info
   - key: DISABLE_DATABASE_ENVIRONMENT_CHECK
     value: "1"
+  - key: SCHEMA
+    value: "db/schema.rb"
 
 - name: worker
   source_dir: /
@@ -85,7 +88,9 @@ services:
     branch: main
     deploy_on_push: true
   build_command: bundle install --deployment --without development test
-  run_command: bundle exec sidekiq -C config/sidekiq.yml
+  run_command: |
+    bundle exec rails ip_lookup:setup
+    bundle exec sidekiq -C config/sidekiq.yml
   environment_slug: ruby
   instance_count: 1
   instance_size_slug: basic-xxs

@@ -12,7 +12,6 @@
     "start:test": "RAILS_ENV=test foreman start -f ./Procfile.test",
     "dev": "overmind start -f ./Procfile.dev",
     "ruby:prettier": "bundle exec rubocop -a",
-    "build": "vite build",
     "build:sdk": "BUILD_MODE=library vite build",
     "prepare": "husky install",
     "size": "size-limit",
