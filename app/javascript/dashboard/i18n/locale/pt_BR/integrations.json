@@ -16,8 +16,8 @@
       "ERROR": "There was an error connecting to Shopify. Please try again or contact support if the issue persists."
     },
     "HEADER": "Integrações",
-    "DESCRIPTION": "Chatwoot se integra com várias ferramentas e serviços para melhorar a eficiência de seu time. Explore a lista abaixo para configurar seus aplicativos favoritos.",
-    "LEARN_MORE": "Aprenda mais sobre integrações",
+    "DESCRIPTION": "Kirvano se integra com várias ferramentas e serviços para melhorar a eficiência de seu time. Explore a lista abaixo para configurar seus aplicativos favoritos.",
+    "LEARN_MORE": "",
     "LOADING": "Obtendo integrações",
     "CAPTAIN": {
       "DISABLED": "O capitão não está ativado na sua conta.",
@@ -27,10 +27,10 @@
     },
     "WEBHOOK": {
       "SUBSCRIBED_EVENTS": "Eventos Inscritos",
-      "LEARN_MORE": "Saiba mais sobre webhooks",
+      "LEARN_MORE": "",
       "FORM": {
         "CANCEL": "Cancelar",
-        "DESC": "Webhook Os eventos fornecem informações em tempo real sobre o que está acontecendo na sua conta do Chatwoot. Digite um URL válido para configurar um retorno de chamada.",
+        "DESC": "Webhook Os eventos fornecem informações em tempo real sobre o que está acontecendo na sua conta do Kirvano. Digite um URL válido para configurar um retorno de chamada.",
         "SUBSCRIPTIONS": {
           "LABEL": "Eventos",
           "EVENTS": {
