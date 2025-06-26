@@ -71,7 +71,8 @@ export default {
       }
     },
     openOpenAIDoc() {
-      window.open('https://www.chatwoot.com/blog/v2-17', '_blank');
+      // Chatwoot docs disabled - no action
+      return false;
     },
   },
 };

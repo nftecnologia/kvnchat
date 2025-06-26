@@ -43,12 +43,13 @@ const showChatSupport = computed(() => {
 const menuItems = computed(() => {
   return [
     {
-      show: showChatSupport.value,
+      show: false, // Hidden - Chatwoot support disabled
       showOnCustomBrandedInstance: false,
       label: t('SIDEBAR_ITEMS.CONTACT_SUPPORT'),
       icon: 'i-lucide-life-buoy',
       click: () => {
-        window.$chatwoot.toggle();
+        // Chatwoot support disabled - no action
+        return false;
       },
     },
     {
@@ -78,11 +79,11 @@ const menuItems = computed(() => {
       },
     },
     {
-      show: true,
+      show: false, // Hidden - Chatwoot docs disabled
       showOnCustomBrandedInstance: false,
       label: t('SIDEBAR_ITEMS.DOCS'),
       icon: 'i-lucide-book',
-      link: 'https://www.chatwoot.com/hc/user-guide/en',
+      link: '#',
       nativeLink: true,
       target: '_blank',
     },
