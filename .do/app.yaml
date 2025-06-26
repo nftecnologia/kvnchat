@@ -6,11 +6,25 @@ services:
     repo: nftecnologia/kvnchat
     branch: main
     deploy_on_push: true
-  run_command: bundle exec puma -C config/puma.rb
+  build_command: |
+    bundle install --without development test
+    pnpm install
+    pnpm build
+    bundle exec rails assets:precompile
+  run_command: |
+    bundle exec rails db:migrate
+    bundle exec puma -C config/puma.rb
   environment_slug: ruby
   instance_count: 1
   instance_size_slug: basic-xxs
-  http_port: 3000
+  http_port: 8080
+  health_check:
+    http_path: /
+    initial_delay_seconds: 60
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
   routes:
   - path: /
   envs:
@@ -22,9 +36,14 @@ services:
   - key: FRONTEND_URL
     value: ${APP_URL}
   - key: DATABASE_URL
-    value: ${db.DATABASE_URL}
+    type: SECRET
+    value: ${DATABASE_URL}
   - key: REDIS_URL
     value: ${redis.DATABASE_URL}
+  - key: REDIS_OPENSSL_VERIFY_MODE
+    value: none
+  - key: PORT
+    value: "8080"
   - key: RAILS_LOG_TO_STDOUT
     value: "true"
   - key: FORCE_SSL
@@ -53,6 +72,7 @@ services:
     repo: nftecnologia/kvnchat
     branch: main
     deploy_on_push: true
+  build_command: bundle install --without development test
   run_command: bundle exec sidekiq -C config/sidekiq.yml
   environment_slug: ruby
   instance_count: 1
@@ -64,9 +84,12 @@ services:
     type: SECRET
     value: ${SECRET_KEY_BASE}
   - key: DATABASE_URL
-    value: ${db.DATABASE_URL}
+    type: SECRET
+    value: ${DATABASE_URL}
   - key: REDIS_URL
     value: ${redis.DATABASE_URL}
+  - key: REDIS_OPENSSL_VERIFY_MODE
+    value: none
   - key: CAPTAIN_ENABLED
     value: "true"
   - key: OPENAI_API_KEY
@@ -74,12 +97,6 @@ services:
     value: ${OPENAI_API_KEY}
 
 databases:
-- name: db
-  engine: PG
-  version: "15"
-  production: false
-  size: basic-xxs
-
 - name: redis
   engine: REDIS
   version: "7"

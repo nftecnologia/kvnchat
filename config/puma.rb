@@ -39,5 +39,5 @@ plugin :tmp_restart
 
 # Bind to all interfaces in production
 if ENV['RAILS_ENV'] == 'production'
-  bind "tcp://0.0.0.0:#{ENV.fetch('PORT', 3000)}"
+  bind "tcp://0.0.0.0:#{ENV.fetch('PORT', 8080)}"
 end
