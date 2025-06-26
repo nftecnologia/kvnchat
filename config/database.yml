@@ -39,7 +39,6 @@ production:
   username: dummy
   password: dummy
   <% end %>
-  pool: <%= ENV.fetch('DB_POOL', 5) %>
   timeout: 5000
   encoding: unicode
   # ref: https://github.com/mperham/sidekiq/issues/2985#issuecomment-531097962

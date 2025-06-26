@@ -39,12 +39,12 @@ services:
     value: ${APP_URL}
   - key: DATABASE_URL
     type: SECRET
-    value: ${DATABASE_URL}
+    value: ${POSTGRESQL_DATABASE_URL}
   - key: BUILD_DATABASE_URL
     value: "postgresql://dummy:dummy@localhost:5432/dummy_build_db"
     scope: BUILD_TIME
   - key: REDIS_URL
-    value: ${redis.DATABASE_URL}
+    value: ${UPSTASH_REDIS_URL}
   - key: REDIS_OPENSSL_VERIFY_MODE
     value: none
   - key: PORT
@@ -105,9 +105,9 @@ services:
     scope: RUN_AND_BUILD_TIME
   - key: DATABASE_URL
     type: SECRET
-    value: ${DATABASE_URL}
+    value: ${POSTGRESQL_DATABASE_URL}
   - key: REDIS_URL
-    value: ${redis.DATABASE_URL}
+    value: ${UPSTASH_REDIS_URL}
   - key: REDIS_OPENSSL_VERIFY_MODE
     value: none
   - key: CAPTAIN_ENABLED
@@ -119,10 +119,4 @@ services:
     type: SECRET
     value: ${RAILS_MASTER_KEY}
 
-databases:
-- name: redis
-  engine: REDIS
-  version: "7"
-  production: false
-  size: basic-xxs
 
