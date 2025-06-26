@@ -7,11 +7,13 @@ services:
     branch: main
     deploy_on_push: true
   build_command: |
-    bundle install --without development test
-    pnpm install
-    pnpm build
-    bundle exec rails assets:precompile
+    bundle install --deployment --without development test
+    pnpm install --frozen-lockfile
+    pnpm run build:sdk
+    pnpm build 
+    RAILS_ENV=production bundle exec rails assets:precompile
   run_command: |
+    bundle exec rails db:create || true
     bundle exec rails db:migrate
     bundle exec puma -C config/puma.rb
   environment_slug: ruby
@@ -65,6 +67,13 @@ services:
     value: "gpt-4"
   - key: OPENAI_EMBEDDINGS_MODEL
     value: "text-embedding-ada-002"
+  - key: RAILS_MASTER_KEY
+    type: SECRET
+    value: ${RAILS_MASTER_KEY}
+  - key: ASSET_CDN_HOST
+    value: ""
+  - key: NODE_ENV
+    value: production
 
 - name: worker
   source_dir: /
@@ -72,7 +81,7 @@ services:
     repo: nftecnologia/kvnchat
     branch: main
     deploy_on_push: true
-  build_command: bundle install --without development test
+  build_command: bundle install --deployment --without development test
   run_command: bundle exec sidekiq -C config/sidekiq.yml
   environment_slug: ruby
   instance_count: 1
@@ -95,6 +104,9 @@ services:
   - key: OPENAI_API_KEY
     type: SECRET
     value: ${OPENAI_API_KEY}
+  - key: RAILS_MASTER_KEY
+    type: SECRET
+    value: ${RAILS_MASTER_KEY}
 
 databases:
 - name: redis
@@ -103,17 +115,3 @@ databases:
   production: false
   size: basic-xxs
 
-static_sites:
-- name: frontend
-  source_dir: /
-  github:
-    repo: nftecnologia/kvnchat
-    branch: main
-    deploy_on_push: true
-  build_command: pnpm install && pnpm build
-  output_dir: public
-  index_document: index.html
-  error_document: index.html
-  routes:
-  - path: /vite-dev
-  - path: /assets
