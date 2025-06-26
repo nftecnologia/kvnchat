@@ -11,7 +11,6 @@ threads min_threads_count, max_threads_count
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
 port_num = ENV.fetch('PORT', 3000).to_i
-port port_num
 
 # Specifies the `environment` that Puma will run in.
 #
@@ -42,5 +41,5 @@ plugin :tmp_restart
 if ENV['RAILS_ENV'] == 'production'
   bind "tcp://0.0.0.0:#{port_num}"
 else
-  bind "tcp://127.0.0.1:#{port_num}"
+  port port_num
 end
