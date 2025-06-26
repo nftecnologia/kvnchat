@@ -11,9 +11,8 @@ services:
     pnpm install --frozen-lockfile
     pnpm run build:sdk
     pnpm build 
-    RAILS_ENV=production bundle exec rails assets:precompile
+    bundle exec rails assets:precompile
   run_command: |
-    bundle exec rails db:create || true
     bundle exec rails db:migrate
     bundle exec puma -C config/puma.rb
   environment_slug: ruby
@@ -74,6 +73,10 @@ services:
     value: ""
   - key: NODE_ENV
     value: production
+  - key: RAILS_LOG_LEVEL
+    value: info
+  - key: DISABLE_DATABASE_ENVIRONMENT_CHECK
+    value: "1"
 
 - name: worker
   source_dir: /
