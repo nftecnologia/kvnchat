@@ -14,7 +14,7 @@ services:
     DISABLE_SPRING=1 RAILS_ENV=production bundle exec rails assets:precompile
   run_command: |
     bundle exec rails ip_lookup:setup
-    bundle exec rails runner "config = InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN'); config.update(value: 'enterprise') if config; GlobalConfig.clear_cache; Rails.cache.clear"
+    bundle exec rails runner "config = InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN'); if config; config.value = 'enterprise'; config.save!; GlobalConfig.clear_cache; Rails.cache.clear; end"
     bundle exec rails db:chatwoot_prepare
     bundle exec puma -C config/puma.rb
   environment_slug: ruby
@@ -94,7 +94,7 @@ services:
   build_command: bundle install --deployment --without development test
   run_command: |
     bundle exec rails ip_lookup:setup
-    bundle exec rails runner "config = InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN'); config.update(value: 'enterprise') if config; GlobalConfig.clear_cache; Rails.cache.clear"
+    bundle exec rails runner "config = InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN'); if config; config.value = 'enterprise'; config.save!; GlobalConfig.clear_cache; Rails.cache.clear; end"
     bundle exec sidekiq -C config/sidekiq.yml
   environment_slug: ruby
   instance_count: 1
