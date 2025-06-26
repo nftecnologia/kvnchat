@@ -466,7 +466,7 @@
       "DESCRIPTION": "Crie portais self-service de fácil utilização. Ajude os seus utilizadores a aceder aos artigos e obter suporte 24/7. Atualize a sua subscrição para habilitar este recurso.",
       "SELF_HOSTED_DESCRIPTION": "Crie portais self-service de fácil utilização. Ajude os seus utilizadores a aceder aos artigos e obter suporte 24/7. Entre em contacto com o administrador para ativar este recurso.",
       "BUTTON": {
-        "LEARN_MORE": "Saiba mais",
+        "LEARN_MORE": "",
         "UPGRADE": "Atualizar"
       },
       "FEATURES": {
