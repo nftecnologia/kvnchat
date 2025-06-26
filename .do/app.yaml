@@ -40,6 +40,9 @@ services:
   - key: DATABASE_URL
     type: SECRET
     value: ${DATABASE_URL}
+  - key: BUILD_DATABASE_URL
+    value: "postgresql://dummy:dummy@localhost:5432/dummy_build_db"
+    scope: BUILD_TIME
   - key: REDIS_URL
     value: ${redis.DATABASE_URL}
   - key: REDIS_OPENSSL_VERIFY_MODE

@@ -27,8 +27,11 @@ test:
 production:
   <% if ENV['DATABASE_URL'].present? %>
   url: <%= ENV['DATABASE_URL'] %>
+  <% elsif ENV['BUILD_DATABASE_URL'].present? %>
+  # Build time configuration using BUILD_DATABASE_URL
+  url: <%= ENV['BUILD_DATABASE_URL'] %>
   <% else %>
-  # Fallback configuration for build time when DATABASE_URL is not available
+  # Fallback configuration for build time when no DATABASE_URL is available
   adapter: postgresql
   database: dummy_build_db
   host: localhost
