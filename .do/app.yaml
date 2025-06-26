@@ -9,6 +9,7 @@ services:
   build_command: |
     bundle install --deployment --without development test
     pnpm install --frozen-lockfile
+    export SECRET_KEY_BASE="12d7f1e8ee481d8b43290e9ebc37c9bc0a0c877c15619ae1874987d1a36234350b1788712491eb2f7ccdafd0e1404757ba4f307ad61117c8e90c0a7b2af18969"
     BUILD_MODE=library bundle exec bin/vite build
     bundle exec bin/vite build
     bundle exec rails assets:precompile
