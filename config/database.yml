@@ -25,7 +25,17 @@ test:
   password: "<%= ENV.fetch('POSTGRES_PASSWORD', '') %>"
 
 production:
+  <% if ENV['DATABASE_URL'].present? %>
   url: <%= ENV['DATABASE_URL'] %>
+  <% else %>
+  # Fallback configuration for build time when DATABASE_URL is not available
+  adapter: postgresql
+  database: dummy_build_db
+  host: localhost
+  port: 5432
+  username: dummy
+  password: dummy
+  <% end %>
   pool: <%= ENV.fetch('DB_POOL', 5) %>
   timeout: 5000
   encoding: unicode
