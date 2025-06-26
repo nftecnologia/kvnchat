@@ -41,7 +41,7 @@
     "TAG_BUTTON": "etiqueta"
   },
   "FEATURE_SPOTLIGHT": {
-    "LEARN_MORE": "",
+    "LEARN_MORE": null,
     "WATCH_VIDEO": "Watch video"
   },
   "DURATION_INPUT": {

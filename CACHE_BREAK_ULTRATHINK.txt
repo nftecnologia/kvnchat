@@ -1,0 +1,4 @@
+ULTRATHINK CACHE BREAKER - 2025-06-26T23:25:00Z
+This file forces cache invalidation for all translation assets.
+All "Saiba mais" and "Aprenda mais" links have been completely removed.
+LEARN_MORE values changed from empty strings to null for structural change.
