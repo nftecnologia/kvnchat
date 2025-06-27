@@ -59,6 +59,8 @@ class Article < ApplicationRecord
   validates :author_id, presence: true
   validates :title, presence: true
   validates :content, presence: true
+  # Remove o limite padrão de 20.000 caracteres para o conteúdo dos artigos
+  validates :content, length: { maximum: 10_000_000 } # 10 milhões de caracteres
 
   # ensuring that the position is always set correctly
   before_create :add_position_to_article
