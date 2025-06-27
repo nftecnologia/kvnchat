@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # ROTA TEMPORÁRIA - DELETAR APÓS USO
+  namespace :admin do
+    post 'clear_title_cache', to: 'cache_clear#clear_title_cache'
+  end
   # AUTH STARTS
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {
     confirmations: 'devise_overrides/confirmations',
