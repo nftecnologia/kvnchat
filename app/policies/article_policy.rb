@@ -4,19 +4,19 @@ class ArticlePolicy < ApplicationPolicy
   end
 
   def update?
-    @account_user.administrator?
+    @account_user.administrator? || @account_user.agent?
   end
 
   def show?
-    @account_user.administrator?
+    @account_user.administrator? || @account_user.agent?
   end
 
   def edit?
-    @account_user.administrator?
+    @account_user.administrator? || @account_user.agent?
   end
 
   def create?
-    @account_user.administrator?
+    @account_user.administrator? || @account_user.agent?
   end
 
   def destroy?
