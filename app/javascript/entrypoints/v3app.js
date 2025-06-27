@@ -11,6 +11,7 @@ import App from '../v3/App.vue';
 import router, { initalizeRouter } from '../v3/views/index';
 import store from '../v3/store';
 import FluentIcon from 'shared/components/FluentIcon/DashboardIcon.vue';
+import 'shared/helpers/forceTitleUpdate.js';
 // import { emitter } from '../shared/helpers/mitt';
 
 // [VITE] This was added in https://github.com/chatwoot/chatwoot/commit/b57063a8b83c86819bd285f481298d7cd38ad50e
