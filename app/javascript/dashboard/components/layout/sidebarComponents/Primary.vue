@@ -1,5 +1,4 @@
 <script>
-import Logo from './Logo.vue';
 import PrimaryNavItem from './PrimaryNavItem.vue';
 import OptionsMenu from './OptionsMenu.vue';
 import AgentDetails from './AgentDetails.vue';
@@ -11,7 +10,6 @@ import { useTrack } from 'dashboard/composables';
 
 export default {
   components: {
-    Logo,
     PrimaryNavItem,
     OptionsMenu,
     AgentDetails,
@@ -21,18 +19,6 @@ export default {
     isACustomBrandedInstance: {
       type: Boolean,
       default: false,
-    },
-    logoSource: {
-      type: String,
-      default: '',
-    },
-    installationName: {
-      type: String,
-      default: '',
-    },
-    accountId: {
-      type: Number,
-      default: 0,
     },
     menuItems: {
       type: Array,
@@ -74,12 +60,6 @@ export default {
     class="flex flex-col justify-between w-16 h-full bg-white border-r dark:bg-slate-900 border-slate-50 dark:border-slate-800/50 rtl:border-l rtl:border-r-0"
   >
     <div class="flex flex-col items-center">
-      <Logo
-        :source="logoSource"
-        :name="installationName"
-        :account-id="accountId"
-        class="m-4 mb-10"
-      />
       <PrimaryNavItem
         v-for="menuItem in menuItems"
         :id="menuItem.key"

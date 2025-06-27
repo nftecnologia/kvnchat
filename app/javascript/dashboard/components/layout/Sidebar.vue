@@ -86,7 +86,6 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'getCurrentUser',
-      globalConfig: 'globalConfig/get',
       inboxes: 'inboxes/getInboxes',
       isACustomBrandedInstance: 'globalConfig/isACustomBrandedInstance',
       isFeatureEnabledonAccount: 'accounts/isFeatureEnabledonAccount',
@@ -219,10 +218,7 @@ export default {
 <template>
   <aside class="flex h-full">
     <PrimarySidebar
-      :logo-source="globalConfig.logoThumbnail"
-      :installation-name="globalConfig.installationName"
       :is-a-custom-branded-instance="isACustomBrandedInstance"
-      :account-id="accountId"
       :menu-items="primaryMenuItems"
       :active-menu-item="activePrimaryMenu.key"
       @toggle-accounts="toggleAccountModal"
