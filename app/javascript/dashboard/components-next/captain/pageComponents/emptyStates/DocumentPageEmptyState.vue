@@ -18,7 +18,6 @@ const onClick = () => {
     :note="$t('CAPTAIN.DOCUMENTS.EMPTY_STATE.FEATURE_SPOTLIGHT.NOTE')"
     fallback-thumbnail="/assets/images/dashboard/captain/document-light.svg"
     fallback-thumbnail-dark="/assets/images/dashboard/captain/document-dark.svg"
-    learn-more-url="https://chwt.app/captain-document"
     class="mb-8"
   />
   <EmptyStateLayout
