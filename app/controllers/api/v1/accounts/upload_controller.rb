@@ -1,5 +1,7 @@
 class Api::V1::Accounts::UploadController < Api::V1::Accounts::BaseController
   def create
+    authorize(:upload)
+
     result = if params[:attachment].present?
                create_from_file
              elsif params[:external_url].present?
