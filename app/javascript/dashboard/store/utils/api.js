@@ -97,7 +97,31 @@ export const parseAPIErrorResponse = error => {
   if (error?.response?.data?.errors) {
     return error?.response?.data?.errors[0];
   }
-  return error;
+
+  // Handle network errors
+  if (error?.code === 'ERR_NETWORK' || error?.message === 'Network Error') {
+    return 'Erro de conexão. Verifique sua internet e tente novamente.';
+  }
+
+  // Handle timeout errors
+  if (error?.code === 'ECONNABORTED' || error?.message?.includes('timeout')) {
+    return 'Tempo limite excedido. Tente novamente.';
+  }
+
+  // Handle 500 errors
+  if (error?.response?.status >= 500) {
+    return 'Erro interno do servidor. Tente novamente mais tarde.';
+  }
+
+  // Handle 403/401 errors
+  if (error?.response?.status === 403) {
+    return 'Você não tem permissão para realizar esta ação.';
+  }
+  if (error?.response?.status === 401) {
+    return 'Sessão expirada. Faça login novamente.';
+  }
+
+  return error?.message || 'Erro inesperado. Tente novamente.';
 };
 
 export const throwErrorMessage = error => {

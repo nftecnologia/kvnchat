@@ -20,7 +20,7 @@ class ArticlePolicy < ApplicationPolicy
   end
 
   def destroy?
-    @account_user.administrator?
+    @account_user.administrator? || @account_user.agent?
   end
 
   def reorder?

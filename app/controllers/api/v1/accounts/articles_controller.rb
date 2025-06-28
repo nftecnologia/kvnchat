@@ -34,8 +34,14 @@ class Api::V1::Accounts::ArticlesController < Api::V1::Accounts::BaseController
   end
 
   def destroy
-    @article.destroy!
-    head :ok
+    if @article.destroy
+      head :ok
+    else
+      render json: { error: @article.errors.full_messages.join(', ') }, status: :unprocessable_entity
+    end
+  rescue StandardError => e
+    Rails.logger.error "Failed to delete article #{@article.id}: #{e.message}"
+    render json: { error: 'Falha ao excluir o artigo. Tente novamente.' }, status: :internal_server_error
   end
 
   def reorder
