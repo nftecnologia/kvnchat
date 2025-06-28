@@ -5,12 +5,16 @@ module Enterprise::Concerns::Article
     after_save :add_article_embedding, if: -> { saved_change_to_title? || saved_change_to_description? || saved_change_to_content? }
 
     def self.add_article_embedding_association
+      return unless ActiveRecord::Base.connection.table_exists?('article_embeddings')
+
       has_many :article_embeddings, dependent: :destroy_async
     end
 
     add_article_embedding_association
 
     def self.vector_search(params)
+      return none unless ActiveRecord::Base.connection.table_exists?('article_embeddings')
+
       embedding = Captain::Llm::EmbeddingService.new.get_embedding(params['query'])
       records = joins(
         :category
@@ -43,6 +47,8 @@ module Enterprise::Concerns::Article
   end
 
   def generate_and_save_article_seach_terms
+    return unless respond_to?(:article_embeddings)
+
     terms = generate_article_search_terms
     article_embeddings.destroy_all
     terms.each { |term| article_embeddings.create!(term: term) }
